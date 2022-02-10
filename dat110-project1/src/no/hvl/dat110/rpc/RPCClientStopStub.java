@@ -16,4 +16,5 @@ public class RPCClientStopStub extends RPCLocalStub {
 		RPCUtils.unmarshallVoid(response);
 	
 	}
+	
 }

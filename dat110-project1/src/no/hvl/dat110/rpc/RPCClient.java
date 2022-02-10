@@ -18,8 +18,18 @@ public class RPCClient {
 		// TODO - START
 		// connect using the underlying messaging layer connection
 		
-		if (true)
-			throw new UnsupportedOperationException(TODO.method());
+		if(connection == null) {
+			
+			try {
+				
+				connection = msgclient.connect();
+				
+			} catch (Exception e) {
+				
+				System.out.println("An error occured: " + e);
+			}
+		}
+		
 		
 		// TODO - END
 	}
@@ -28,16 +38,24 @@ public class RPCClient {
 		
 		// TODO - START
 		// disconnect/close the underlying messaging connection
+		try{
+			
+			if(connection != null) {
+				
+				connection.close();
+			}
+		}catch (Exception e) {
+			
+			System.out.println("An error occured: " + e);
+		}
 		
-		if (true)
-			throw new UnsupportedOperationException(TODO.method());
 		
 		// TODO - END
 	}
 	
 	public byte[] call(byte rpcid, byte[] params) {
 		
-		byte[] returnval = null;
+		byte[] returnval;
 		
 		// TODO - START 
 		
@@ -52,12 +70,18 @@ public class RPCClient {
 		according to the RPC message format
 			
 		*/
-				
-		if (true)
-			throw new UnsupportedOperationException(TODO.method());
+		
+		byte[] reqval = RPCUtils.encapsulate(rpcid, params);
+		
+		connection.send(new Message(reqval));
+		
+		returnval = connection.receive().getData();
+		
 		
 		// TODO - END
+		
 		return returnval;
+		
 		
 	}
 
