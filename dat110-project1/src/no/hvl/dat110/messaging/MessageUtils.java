@@ -17,17 +17,23 @@ public class MessageUtils {
 		// encapulate/encode the payload data of the message and form a segment
 		// according to the segment format for the messagin layer
 		
-		data = new byte[MessageConfig.SEGMENTSIZE];
+		//hente data en gong!!!
 		
-		int paylength = message.getData().length;
+		data = message.getData();
+		
+		int lengda = data != null ? data.length : 0;
+	
+		byte leng = (byte)lengda;
 
-		data[0] = (byte)paylength;
+		segment = new byte[MessageConfig.SEGMENTSIZE];
 		
-		for(int i = 0; i < message.getData().length; i++) {
-			data[i+1] = message.getData()[i];
+		segment[0] = leng;
+		
+		for(int i = 0; i < leng; i++) {
+			segment[i+1] = data[i];
 		}
 		// TODO - END
-		return data;
+		return segment;
 		
 	}
 
@@ -38,9 +44,11 @@ public class MessageUtils {
 		// TODO - START
 		// decapsulate segment and put received data into a message
 		
-		byte[] data = new byte[segment[0]];
+		int len = segment[0];
 		
-		for(int i = 0; i < segment[0]; i++) {
+		byte[] data = new byte[len];
+		
+		for(int i = 0; i < len; i++) {
 			data[i] = segment[i+1];
 		}
 		message = new Message(data);

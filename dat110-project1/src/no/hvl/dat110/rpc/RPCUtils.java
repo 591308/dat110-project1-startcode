@@ -14,11 +14,13 @@ public class RPCUtils {
 		
 		// Encapsulate the rpcid and payload in a byte array according to the  RPC message syntax
 		
-		rpcmsg = new byte[payload.length+1];
+		int a = payload != null ? payload.length:0;
+		
+		rpcmsg = new byte[a + 1];
 		
 		rpcmsg[0] = rpcid;
 		
-		for(int i = 0; i < payload.length; i++) {
+		for(int i = 0; i < a; i++) {
 			rpcmsg[i+1] = payload[i];
 		}
 		
@@ -29,20 +31,16 @@ public class RPCUtils {
 	
 	public static byte[] decapsulate(byte[] rpcmsg) {
 		
-		byte[] payload = null;
-		
 		// TODO - START
 		
 		// Decapsulate the rpcid and payload in a byte array according to the  RPC message syntax
 		
-		payload = new byte[rpcmsg.length-1];
+		int len = rpcmsg.length - 1;
+		byte[] payload = new byte[len];
 		
-		for(int i = 0; i < rpcmsg.length-1; i++) {
+		for (int i = 0; i < len; i++) {
 			payload[i] = rpcmsg[i+1];
 		}
-		
-		
-		// TODO - END
 		
 		return payload;
 		
@@ -50,17 +48,11 @@ public class RPCUtils {
 	
 	public static byte[] marshallString(String str) {
 		
-		byte[] encoded = null;
+		byte[] encoded = new byte[2];
 		
 		// TODO - START 
 		
-		encoded = new byte[1+str.getBytes().length];
-		
-		encoded[0] = (byte) str.getBytes().length;
-		
-		for(int i = 0; i < str.getBytes().length; i++) {
-			encoded[i+1] = str.getBytes()[i];
-		}
+		encoded = str.getBytes();
 		
 		// TODO - END
 		
@@ -72,7 +64,7 @@ public class RPCUtils {
 		
 		// TODO - START 
 		
-		String decoded = new String(Arrays.copyOfRange(data, 1, data.length));
+		String decoded = new String(data);
 		// TODO - END
 		
 		return decoded;
@@ -80,13 +72,7 @@ public class RPCUtils {
 	
 	public static byte[] marshallVoid() {
 		
-		
-		// TODO - START 
-		byte[] encoded = new byte[0];
-		
-		// TODO - END
-		
-		return encoded;
+		return null;
 		
 	}
 	
@@ -121,31 +107,17 @@ public class RPCUtils {
 	public static byte[] marshallInteger(int x) {
 		
 		
-		// TODO - START 
+		ByteBuffer bb = ByteBuffer.allocate(Integer.BYTES); 
+	    bb.putInt(x); 
 		
-		byte[] encoded = new byte[5];
-		
-		byte[] b = ByteBuffer.allocate(4).putInt(x).array();
-
-		for(int i = 1; i< encoded.length; i++) {
-			encoded[i] = b[i-1];
-		}
-
-		// TODO - END
-		
-		return encoded;
+		return bb.array();
 	}
 	
 	
 	public static int unmarshallInteger(byte[] data) {
 		
-		int decoded = 0;
-		
-		// TODO - START 
-		decoded = ByteBuffer.wrap(Arrays.copyOfRange(data, 1, data.length)).getInt();
-		// TODO - END
-		
-		return decoded;
+		ByteBuffer byteBuffer = ByteBuffer.wrap(data);
+	    return byteBuffer.getInt();
 		
 	}
 }

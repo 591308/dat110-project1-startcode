@@ -11,7 +11,7 @@ public class SensorDevice {
 		
 		RPCServer sensorserver = new RPCServer(Common.SENSORPORT);
 
-		SensorImpl sensor = new SensorImpl((byte)1,sensorserver);
+		new SensorImpl((byte)1,sensorserver);
 		
 		sensorserver.run();
 		

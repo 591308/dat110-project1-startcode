@@ -9,10 +9,10 @@ public class Message {
 	public Message(byte[] data) {
 		
 		// TODO - START
-		if(data != null && data.length < 128) {
-			this.data = data;
+		if(data.equals(null) || data.length > 127) {
+			throw new UnsupportedOperationException(TODO.constructor("Data er null eller over 127 bytes"));
 		} else {
-			System.out.println("Too many bytes");
+			this.data = data;
 		}
 		// TODO - END
 	}

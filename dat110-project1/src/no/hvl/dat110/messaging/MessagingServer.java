@@ -30,7 +30,8 @@ public class MessagingServer {
 		// accept TCP connection on welcome socket and create connection
 			
 			try {
-				connection = new Connection(welcomeSocket.accept());
+				Socket socket = welcomeSocket.accept();
+				connection = new Connection(socket); 
 				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block

@@ -21,22 +21,22 @@ public class MessagingClient {
 	public Connection connect () {
 			
 		Socket clientSocket = null;
-		
+		Connection connection = null;
 		
 		// TODO - START
 		// create TCP socket for client and connection
 		
 		try {
-			
+		
 			clientSocket = new Socket(server, port); //lage socket
-				//koble socket
+			
+			connection = new Connection(clientSocket);//koble socket
 			
 		} catch (IOException e) {
 		
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Connection connection = new Connection(clientSocket);
 		
 		// TODO - END
 		return connection;

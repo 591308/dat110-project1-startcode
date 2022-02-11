@@ -18,19 +18,8 @@ public class RPCClient {
 		// TODO - START
 		// connect using the underlying messaging layer connection
 		
-		if(connection == null) {
-			
-			try {
-				
 				connection = msgclient.connect();
-				
-			} catch (Exception e) {
-				
-				System.out.println("An error occured: " + e);
-			}
-		}
-		
-		
+
 		// TODO - END
 	}
 	
@@ -38,18 +27,9 @@ public class RPCClient {
 		
 		// TODO - START
 		// disconnect/close the underlying messaging connection
-		try{
-			
-			if(connection != null) {
-				
+
 				connection.close();
-			}
-		}catch (Exception e) {
-			
-			System.out.println("An error occured: " + e);
-		}
-		
-		
+	
 		// TODO - END
 	}
 	
@@ -71,11 +51,9 @@ public class RPCClient {
 			
 		*/
 		
-		byte[] reqval = RPCUtils.encapsulate(rpcid, params);
+		connection.send(new Message(RPCUtils.encapsulate(rpcid, params)));
 		
-		connection.send(new Message(reqval));
-		
-		returnval = connection.receive().getData();
+		returnval = RPCUtils.decapsulate(connection.receive().getData());
 		
 		
 		// TODO - END

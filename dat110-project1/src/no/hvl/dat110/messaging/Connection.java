@@ -34,12 +34,15 @@ public class Connection {
 
 	public void send(Message message) {
 		
+		byte[] data;
 		// TODO - START
 		// encapsulate the data contained in the message and write to the output stream
 		
+		data = MessageUtils.encapsulate(message);
+		
 		try {
 			
-			outStream.write(MessageUtils.encapsulate(message));
+			outStream.write(data);
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -51,20 +54,23 @@ public class Connection {
 	public Message receive() {
 
 		Message message = null;
-		byte[] data = new byte[MessageConfig.SEGMENTSIZE];
+		byte[] data;
 		
 		// TODO - START
 		// read a segment from the input stream and decapsulate into message
 		
+		data = new byte[MessageConfig.SEGMENTSIZE];
 		try {
 			
-			inStream.read(data);
-			message = MessageUtils.decapsulate(data);
+			for(int i = 0; i < 128; i++) {
+				data[i] = inStream.readByte();
+			}
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		message = MessageUtils.decapsulate(data);
 		// TODO - END
 		
